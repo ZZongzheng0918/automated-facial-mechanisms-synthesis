@@ -1,0 +1,1412 @@
+
+
+===== PAGE 1 =====
+Automated Synthesis of Facial Mechanisms for
+Conversational Animatronic Robots
+Author Names Omitted for Anonymous Review. Paper-ID [26]
+(a)
+ (b)
+(c)
+I can’t 
+believe it.
+But I 
+reckon 
+that’s…
+The world
+is changed.
+virtual
+(d)
+(e)
+Fig. 1: We demonstrate our end-to-end physical conversational face system across diverse multi-round interactions: (a)
+reenactments ofStar Wars(Yoda–Luke Skywalker) and (b)Titanic(Rose–Jack); (c) a dialogue between a real elf and a virtual
+elf; (d) a three-character encounter from the Chinese folktaleLegend of the White Snake; and (e) human–robot dialogue.
+Abstract—Animatronic faces are a central component of so-
+cially interactive robots, enabling rich nonverbal communication
+through facial articulation. However, state-of-the-art animatronic
+faces are typically tailored systems: each new facial geometry re-
+quires extensive manual mechanical redesign, making large-scale
+personalization prohibitively slow and costly. In this work, we
+pursue automated and scalable mechanical face synthesis, aiming
+to rapidly generate a physically realizable facial mechanism
+for any given face. We introduce a parametric, linkage-driven
+mechanical face template whose topology and actuator layout
+are explicitly parameterized to support systematic scaling and
+retargeting across diverse facial morphologies. Building on this
+template, we propose a hierarchical automatic design algorithm
+that takes a single 2D portrait as input, reconstructs a target 3D
+face, and synthesizes a collision-free, manufacturable internal
+mechanism. The algorithm combines anatomy-guided feasible
+motion volumes, AU-derived trajectory-based expressiveness ob-
+jectives, and a collision-driven outer-loop refinement strategy.
+Beyond hardware synthesis, we argue that future mechanical
+faces deployed at scale must engage in bidirectional, multi-turn
+conversation, rather than functioning solely as speaking or listen-
+ing heads. To this end, we develop a dual-identity conversational
+facial motion synthesis framework that jointly models speak-
+ing and listening behaviors from audio, producing temporally
+coherent 3D facial motion suitable for physical execution. We
+validate our system through extensive experiments, including
+(i) quantitative evaluation of automatic mechanism synthesis
+across diverse facial geometries, (ii) comparisons against manual
+mechanical design, (iii) benchmarks on conversational facial
+motion synthesis and real-time deployment, and (iv) perceptual
+user studies. The entire hardware design, code, and datasets will
+be released.
+I. INTRODUCTION
+Imagine a future where thousands of robots coexist with
+humans, each endowed with a distinct face, identity, and
+personality. Rather than sharing a single canonical appearance,
+these robots would exhibit thousands of unique mechanical
+faces (from realistic human likenesses to stylized fictional
+characters) capable of engaging in rich, multi-turn conversa-
+tions. As illustrated in Fig. 1, such animatronic faces would
+not merely speak, but participate in bidirectional dialogue,
+react as listeners, and sustain expressive interactions across
+diverse narratives and social contexts. Realizing this vision of
+massively personalized, conversational mechanical faces rep-
+resents a foundational step toward socially integrated robotics.
+However, despite decades of progress in animatronic face
+design [51, 52, 10], today’s state-of-the-art systems remain
+fundamentally tailored [41, 115, 110]. High-fidelity platforms
+achieve impressive realism through carefully engineered ac-
+tuation layouts, transmission systems, and handcrafted link-
+ages [67, 24, 58]. Yet each of these faces is designed for a
+single fixed geometry. Adapting such systems to a new facial
+morphology typically requires extensive manual mechanical
+redesign, iterative prototyping, and expert intervention. As a
+result, current approaches scale poorly: they cannot feasibly
+support the rapid creation of hundreds or thousands of mechan-
+ically distinct faces, let alone support the diverse characters
+demonstrated in Fig. 1. This reliance on custom mechanical
+
+===== PAGE 2 =====
+design forms a critical bottleneck that prevents animatronic
+faces from scaling beyond isolated demonstrations.
+To overcome this limitation, we argue that animatronic
+faces must be treated not as handcrafted artifacts, but as
+automatically synthesizable systems. Our core design principle
+is simple: instead of redesigning mechanisms from scratch for
+each face, we start from a parametric mechanical face template
+whose topology, actuator layout, and kinematic structure are
+explicitly parameterized. Given this template, we seek an au-
+tomated pipeline that can rapidly adapt the internal mechanism
+to any given facial geometry, producing a collision-free, man-
+ufacturable design with minimal human intervention. In this
+paradigm, mechanical face design becomes a computational
+problem [21, 17, 93, 54].
+Building on this principle, we introduce an end-to-end
+automated mechanical face synthesis pipeline. Starting from a
+single 2D portrait, our system reconstructs a 3D facial geome-
+try and initializes a modular linkage-driven face template. We
+then perform hierarchical optimization to adapt the template to
+the target face.At the module level, we synthesize kinematic
+structures that maximize expressiveness under anatomy-guided
+feasible motion volumes and AU-derived trajectory objectives.
+At the assembly level, we resolve spatial conflicts using a
+collision-driven outer-loop refinement strategy that iteratively
+adjusts base poses or schedules expression amplitudes. This
+hierarchical design tightly couples kinematic synthesis with
+engineering validation, enabling the automatic generation of
+high-DOF facial mechanisms that are both expressive and
+physically realizable. As demonstrated in Fig. 1, this approach
+generalizes across human, stylized, and non-human faces,
+including characters with drastically different morphologies.
+Crucially, scalable hardware alone is not sufficient. If anima-
+tronic faces are to be deployed at scale in human environments,
+they must function as conversational agents, not merely as
+talking heads. Yet most existing facial motion generation and
+mapping methods are designed for a single face and single-
+speaker setting [115, 110, 42, 101, 58]. They generate speech-
+driven expressions without modeling listening behaviors or
+multi-turn interaction, and are often ill-suited for physical
+execution. In contrast, we posit that future mechanical faces
+should participate in dialogue, alternating naturally between
+speaking and listening roles. To this end, we introduce a dual-
+identity conversational facial motion synthesis framework that
+jointly models speaking and listening behaviors from audio,
+producing temporally coherent 3D facial motion suitable for
+real-time robotic actuation. We further develop a semantic,
+region-wise mapping strategy that robustly translates synthe-
+sized facial motion into actuator commands, bridging the gap
+between digital animation and physical execution.
+We validate our approach through extensive experiments
+spanning both hardware and software.On the mechanical
+side, we quantitatively evaluate the success rate, convergence
+speed, and expressiveness of our automated design pipeline
+across diverse facial geometries, and compare against man-
+ual design and alternative optimization strategies.On the
+interaction side, we benchmark our conversational facial
+motion synthesis against state-of-the-art talking-head methods
+in both speaker and listener roles, and demonstrate real-time
+deployment on physical robots.Finally, perceptual user stud-
+ies confirm that our end-to-end system delivers more natural,
+engaging, and socially convincing interactions. Together, these
+results demonstrate that our framework provides a scalable and
+practical path toward the vision of thousands of personalized,
+conversational animatronic faces.
+II. RELATEDWORK
+A. Mechanical Face Platform
+The evolution of mechanical face design has transitioned
+from early exploration of actuation modalities to today’s
+hyper-realistic platforms. Early research established the fea-
+sibility of FACS-based motion using pneumatic muscles and
+micro-actuators [51, 52, 53, 36, 37, 5, 46, 77], later in-
+corporating bio-inspired materials and tendon-driven mech-
+anisms to improve compliance [35, 96, 34, 27, 58]. Sub-
+sequent efforts focused on system integration, embedding
+dense DoFs into full-body humanoids [48, 74, 56, 1, 63]
+and android heads [34, 27, 31], while investigating social
+engagement through developmental platforms like Cog and
+Affetto [7, 71, 44, 2]. Recently, the field has shifted toward
+high-fidelity architectures with refined transmission systems,
+exemplified by platforms such as Abel, Ameca, Nikola, and
+EMO [16, 76, 26, 10, 41, 102, 103]. Latest designs further
+explore diverse points in the design space, from robust hybrid
+actuation schemes (Morpheus) to low-cost soft solutions [89,
+67, 24, 115, 110]. Despite these advancements, a critical
+limitation persists: state-of-the-art systems are bespoke designs
+engineered for a single fixed geometry. Adapting these so-
+phisticated architectures to new 3D faces typically necessitates
+substantial manual redesign, a scalability bottleneck our work
+aims to resolve.
+B. Automatic Robot Design
+Computer graphics has extensively explored synthesizing
+mechanisms from motion specifications, ranging from planar
+linkages and characters [17, 3, 93] to automata derived from
+motion capture [9, 113]. Complementary tools have facilitated
+rapid fabrication [73, 8] and template retargeting [106], though
+these methods typically prioritize kinematic feasibility over
+the internal interference required for physical operation. In
+robotics, optimization extends to dynamics, with task-based
+methods tuning cable-driven mechanisms [59, 49, 45, 85]. Fur-
+thermore, morphology-control co-optimization utilizing differ-
+entiable, RL, and graph-based frameworks [100, 32, 88, 38,
+95, 111, 50, 62, 92] has been applied across domains including
+locomotion [28, 33], soft robotics [65, 40], manipulation [72,
+30, 29, 104, 54], and multicopters [21, 99]. However, these
+strategies often yield coarse topologies, lacking the precision
+to embed complex linkages into constrained facial volumes.
+Specific to facial robotics, seminal works [6, 43] address the
+coupling of rigid actuators and deformable skin. Yet, they treat
+the kinematic structure as fixed, optimizing only placement.
+In contrast, our framework unifies kinematic synthesis with
+
+===== PAGE 3 =====
+Soft Skin
+Neck
+(a) (b)
+Eyebrow Eyes
+Mouth Jaw
+Upper
+Lip
+Lower Lip
+Mouth 
+Corner
+Fig. 2:Mechanical face template.(a) Full assembly of the
+linkage-driven robotic face with a soft skin and a 3-DoF
+neck module. (b) Exploded view of the four modular facial
+mechanisms—eyebrow, eyes, mouth, and jaw.
+engineering validation to automate the design of high-DOF
+facial mechanisms.
+C. Talking Head Generation and Expression Mapping
+While 2D audio-driven generation offers visual fidelity [86,
+107, 55, 84, 64], its high latency and limited perspective
+robustness [112, 114, 101, 42, 109] make 3D synthesis prefer-
+able for robotic actuation [18, 87, 14, 110]. 3D synthesis
+has evolved from deterministic lip-sync [25, 98] to emo-
+tional expressiveness [80, 19, 66] and cross-identity gener-
+alization [69, 23, 11]. Crucially, recent research shifts from
+monologue [79, 81, 83] to dyadic interaction, employing dual-
+turn frameworks to model reciprocal dynamics and listening
+behaviors [82, 75, 94, 15, 12]. To bridge the gap to physical
+robots, mapping approaches have progressed from geometric
+correspondence [10, 24, 97, 39, 115] to semantic representa-
+tions and data-driven optimization [68, 60, 105, 108, 103, 58].
+Unlike prior works restricted to single-speaker generation or
+frame-wise mapping, we strictly enforce a joint modeling
+of dual-turn synthesis and semantic region-wise mapping to
+enable robust multi-turn conversational interaction.
+III. AUTOMATEDSCALABLEMECHANISMDESIGN
+In this section, we present an end-to-end pipeline for
+automated hardware designof a scalable robotic face. We
+first introduce ascalable hardware templatederived from
+a canonical mean face model, where the actuator layout and
+linkage topology are parameterized to support rapid adaptation
+across diverse facial morphologies (Sec. III-A). Building on
+this template, We then propose ahierarchical automatic
+design algorithm(Algorithm 1) that takes a single 2D portrait
+as input, reconstructs the target 3D facial geometry, and
+progressively optimizes the template parameters under man-
+ufacturability and non-interference constraints (Sec. III-B).
+A. Parametric Face Template Design
+We develop a modular, parametric mechanical-face template
+that serves as the starting point of our automated design
+pipeline. The face template is composed of four modules:
+eyebrow,eyes,mouth, andjaw(Fig. 2). The eyebrow module
+contains two kinds of motion: the vertical movement of the
+eyebrow ridge and the brow center. Both are simulated by
+a spatial six-bar mechanism with2DoF. The eye module
+contains8DoF. It comprises four eyelid linkages (upper/lower
+lids for both eyes) and two rotational DoFs per eyeball. The
+mouth module integrates mechanisms for the upper/lower lips
+and mouth corners. Both the upper and lower lips are actuated
+by spatial four-bar linkages whose end-effector motions fol-
+low vertical trajectories to match the predominant anatomical
+direction of lip deformation. The mouth corners are driven
+by a five-bar mechanism that supports three principal motion
+modes: upward raising, lateral translation, and downward
+pulling. The jaw module is actuated by a four-bar mechanism.
+Finally, head pose is produced by a neck module consisting
+of a2DoF parallel mechanism for nodding/tilting and an
+additional rotational DoF for yaw.
+B. Hierarchical Automatic Design
+1) Coarse initialization:Given an input RGB portrait im-
+ageI, we use the framework [116] to construct a normalized
+3D facial meshMtogether with a set of semantically labeled
+3D facial landmarksP. We then importMinto a CAD
+environment and apply a scaling factor to bring the head
+geometry into a physically plausible metric range. These 3D
+semantic points are then used for the subsequent module-level
+coarse initialization (Fig. 3(a)).
+Using the scaled semantic landmarks, we perform a module-
+level coarse initialization to obtain the initial base posesp base.
+Theeyesandjawmodules are fully determined at this stage.
+Specifically, the eye geometry is directly computed by peri-
+ocular landmark subsets, and the jaw module is anchored
+by the jawline landmarks, yielding a fixed initialization. In
+contrast, theeyebrowandmouth(mouth corners and lips)
+modules require further kinematic synthesis. We initialize
+their base posesp base
+brow andp base
+mouth by scaling the template
+anthropometric offsets according to the reconstructed head
+scale:p base
+k ←p base
+k,0 +β∆p tmpl
+k ,where∆p tmpl
+k denotes the
+corresponding relative offsets in the mean-face template, and
+βis the global scaling factor applied toM. Their structural
+parameters are initialized with the template values, which
+serve as the starting point for the module-wise kinematic
+design optimization in the next step (see App. D1 for details).
+2) Module-wise kinematic design optimization:With the
+rigid modules (eyes and jaw) geometrically determined in
+the coarse initialization phase, this step focuses on the kine-
+matic synthesis of the eyebrow and mouth modules. The
+core challenge lies in synthesizing mechanism parameters that
+maximize expressive amplitude while strictly adhering to the
+anatomical spatial constraints imposed by the facial skin.
+Anatomy-guided feasible motion volumes.To ensure the
+synthesized mechanisms operate within bio-plausible limits,
+we define the feasible workspaceΩ feas for the eyebrow,
+mouth corner, and lip regions (Fig. 3(b); details in App. D2),
+following the evidence from [20, 13]. We constructΩ feas as
+the maximal anatomically valid envelope, so that the optimizer
+retains sufficient freedom to maximize expressiveness. Simul-
+
+===== PAGE 4 =====
+2D Portrait
+(a) (b) (c)
+3D Reconstruction
+3D Mesh & 
+Semantic Landmarks
+Coarse Initialization
+Inner Loop — Optimize each module 
+(e.g. Mouth Corner 5-bar)
+Outer Loop — Collison refinement
+Feasible Workspace
+Anatomy 
+Points
+Target Trajectories
+Upward 
+Raising
+Lateral 
+Translation
+Downward 
+Pulling
+Optimization (Eq. 1)
+Trajectory 
+Scaling 훼
+End Point
+Workspace
+Constraint
+Base
+Initialization
+Re-optimize
+Global CAD Assembly
+Collision Found
+Yes
+Pose 
+Adjustment
+Amplitude
+SchedulingOr
+Collision-free
+Final Assembly
+Assemble
+No
+MTV
+Detection Refinement 
+Eq. 2
+Fig. 3:Overview of the hierarchical automatic design pipeline.(a)Initialization: From a 2D portrait, we reconstruct a
+3D head mesh, semantic landmarks, and initialize module base poses. (b)Inner loop: We perform module-wise kinematic
+synthesis under anatomy-guided feasible volumes and AU-derived trajectories to maximize expressiveness (illustrated with the
+mouth-corner five-bar mechanism). (c)Outer loop: We assemble assemble the global CAD model, detect interferences, and
+apply MTV-guided base-pose updates (or, if necessary, reduce the amplitude limit) until a collision-free assembly is obtained.
+taneously, strictly confining the solution to this valid manifold
+acts as a regularization term. This will accelerate convergence
+by pruning the search space of physically impossible poses and
+mitigate the risk of the solver trapping in invalid local minima,
+thereby guiding the optimization toward realizable solutions.
+Trajectory-based expressiveness objectives.We derive
+module-specific motion trajectories from facial Action Units
+(AUs) [22] to ensure that the designed mechanisms follow
+anatomically consistent patterns of human facial motion.
+Concretely, we define a set of canonical target trajectories
+B={T 1, . . . ,TK}, where eachT k is represented by a
+sequence ofMsampled points in the local workspace (details
+in App. D3). We reformulate the goal of maximizing expres-
+siveness as a trajectory scaling problem. For each trajectory
+Tk, we introduce a scalar amplitude coefficientα k. Crucially,
+this scaling is directional: rather than isotropically enlarging
+the mechanism, it linearly extrapolates the waypoints along
+the trajectory pathT k (Fig. 3(b)). By optimizing for larger
+{αk}K
+k=1 values, we aim to synthesize mechanisms capable of
+executing high-amplitude expressions while strictly preserving
+the semantic direction of the original human movements.
+Optimization formulation.For each mechanical structure
+k, we perform kinematic design optimization in its local
+coordinate frame. Specifically, using the module base pose
+pbase from coarse initialization, we transformT k to each local
+frame. We formulate the module-wise mechanism synthesis
+as a constrained non-linear optimization problem. Given the
+target trajectoriesT k, we seek to determine the optimal
+structural parametersΦ k (link lengths), the set of discrete joint
+configurationsΘ k, and the expression amplitude coefficients
+αk. We define a unified cost functionLto balance expressive
+range, tracking accuracy, and kinematic manipulability:
+min
+Φ,Θ,α
+L=ω ampLamp +ω fitLfit −ω manLman
+s.t.P(θ k,m)⊂Ω feas,∀m∈ {1, . . . , M},
+0< α k ≤α limit
+k ,∀k∈ {1, . . . , K},
+(1)
+whereω amp,ω fit, andω man are user-defined weighting factors.
+The individual objective terms are defined as follows:L amp =
+1/αk;L fit = PM
+m=1 ∥f(θ k,m,Φ)−p k,m(αk)∥2
+2, where
+pk,m ∈T k;L man =PM
+m=1
+p
+det(J(θk,m)J(θk,m)⊤). Here,
+mindices the discrete waypoints along the trajectory.θ k,m
+denotes the instantaneous joint configuration at stepm,f(·)
+represents the forward kinematics, andJis the geometric Ja-
+cobian matrix utilized to maximize workspace manipulability
+(see App. C for explicit derivations).
+3) Global CAD assembly and collision-driven refinement:
+This step integrates all modules into a global CAD assembly
+via API and resolves spatial conflicts through a collision-
+driven outer-loop refinement strategy. For a mechanismk, we
+sample discrete configurations{θ k,m}M
+m=1 along its optimized
+trajectory and utilize a collision detection library FCL [78]
+to identify interferences between thek-th module and the
+environment (skull and adjacent mechanisms). For every ac-
+tive collision constraintsj∈ C k, we compute aMinimum
+Translation Vectorv int =δ j ·n j, whereδ j is the penetration
+depth andn j is the separation normal (Fig. 3(c)). To resolve
+multiple simultaneous collisions while minimally perturbing
+the design, we solve a QP problem:
+min
+∆pk
+∥∆pk∥2
+2 s.t.n ⊤
+j ∆pk ≥δ j +ϵ,∀j∈ C k, (2)
+whereϵis a safety clearance margin. We accept the pose up-
+date only if∆p k falls within a thresholdD max; otherwise, we
+
+===== PAGE 5 =====
+Algorithm 1Hierarchical Automatic Design
+Require:2D portrait imageI; template face design
+Ensure:Final assemblyA
+1:(M,P)←RECONSTRUCT3D(I)
+2:{p base} ←COARSEINITIALIZATION(M,P)▷Initialization
+3:foriterations= 1toSdo
+4:formechanismk∈ {brow,mouth}do▷Inner loop
+5:{T k} ←GLOBALTOLOCAL({T k},p base
+k )
+6:(Φ k,Θ k,α k)←SOLVEEQ. 1(Ω feas,{T k},{α limit
+k })
+7:end for
+8:α limit
+k ←min(α limit
+k , α∗
+k),∀k ▷Outer loop
+9:A ←ASSEMBLECAD({p base
+k },{Φ k})
+10:C ←COLLISIONDETECTION(A,{Θ k})
+11:ifC=∅then
+12:break
+13:end if
+14:foreach mechanismkwith constraintsC k do
+15:({n j, δj}j∈Ck)←MTV(C k)
+16:∆p k ←SOLVEEQ. 2({n j, δj}j∈Ck , ϵ)
+17:if∥∆p k∥2 > D max then▷Amplitude scheduling
+18:α limit
+k ←γ α limit
+k
+19:continue▷Skip update, re-optimization next iter
+20:end if
+21:p base
+k ←p base
+k + ∆pk ▷Pose adjustment
+22:end for
+23:end for
+24:returnA
+contractα limit
+k via a decay factorγ∈(0,1). The updatedp base
+k
+is fed back to the inner-loop optimization phase (Sec. III-B2),
+whereΦ k andΘ k are re-optimized in the new local frame.
+The outer loop iterates until all collisions are satisfied (C=∅),
+outputting the final assemblyA.
+IV. INTERACTIONSYNTHESIS ANDCONTROL
+Following the automated mechanical-face adaptation de-
+scribed above, we present the algorithms thatdrive interactive
+expressions on the physical robot. We first generate3D facial
+motionfor multi-round dialogue, modeling both speaking and
+listening behaviors under conversational context (Sec. IV-A).
+We thenmapthe synthesized digital facial motion to robot-
+actuable commands (Sec. IV-B). Together, these modules
+bridge conversational interaction, 3D facial animation, and
+embodied execution on the mechanical face.
+A. Interactive Talking Head Synthesis
+Unified dual-speaker interaction framework.The frame-
+work (Fig. 4(a)) takes the audio from speaker-A and speaker-B
+as input and directly outputs a temporally coherent sequence
+of blendshape parameters that drives the synthesized facial
+motion. First, we use a pre-trained audio encoder Wav2Vec
+2.0 [4] to mapA A ∈R T×F andA B ∈R T×F into a shared
+latent space, whereTis the sequence length andFis the
+sampling rate. We then apply a learnable linear projectionW a
+to align both streams to a shared feature dimensiond:
+ZA =W a
+ 
+Eaud(AA)
+
+,Z B =W a
+ 
+Eaud(AB)
+
+,(3)
+whereZ A,Z B ∈R L×d serve as the unified audio feature. We
+add temporal positional encoding and style embeddings to get
+˜ZA, ˜ZB. Since the two speakers are largely non-overlapping
+in speech, we regulate the contribution of the two audio
+streams via a turn-aware gate derived from speech activity. Let
+gA(t)∈[0,1]indicate whether Speaker-A is speaking at frame
+t. We form a turn-conditioned audio memory for speaker-A as:
+MA(t) =g A(t) ˜ZA(t) +
+ 
+1−g A(t)
+ ˜ZB(t).Then we adopt a
+Transformer backbone. Specifically, an encoder models long-
+range dependencies of the turn-conditioned memory. To fur-
+ther stabilize speaking–listening transitions, we apply a turn-
+aware alignment attention. We decode the full motion using
+Tlearnable motion queries with positional encodings. Finally,
+a regression head predicts Speaker-A blendshape parameters
+ˆY∈R T×55 (details in App. F).
+Dataset construction.While recent conversational inter-
+action datasets [82, 15] utilize FLAME [61] parameters,
+its expression coefficients are not aligned with semantically
+interpretable Blendshape [57] controls, which complicates the
+mapping process. We therefore build a dataset of paired two-
+speaker audio and per-frame blendshape coefficients.
+We collect raw conversation videos from YouTube, and [47].
+Each video is first segmented into temporally coherent clips
+using TransNetV2 [91]. For each clip, we separate the two-
+speaker audio streams with SAM Audio [90], obtaining
+synchronized audioA A,A B. On the visual side, we run
+MediaPipe [70] to extract per-frame Blendshape parameters
+b∈R 52 and head rotationR∈R 3. The final dataset consists
+of synchronized tuplesD={(A A,A B,B A,B B,R A,R B)}.
+B. Human-to-Robot Facial Expression Mapping
+Mapping network.At each framet, the synthesis network
+predicts ˆyt = [ ˆbt; ˆrt]. The head motion is realized by the
+neck module; given ˆrt, we compute the corresponding motor
+targetsu head
+t via an inverse-kinematics (IK) solver. For the
+facial expressions, we exploit the semantic structure of the
+blendshape basis by partitioning the coefficient vector into
+region-specific subsets, denoted as ˆbt ={ ˆb(k)
+t }k∈K with
+K={eyebrow,eyes,mouth,jaw}. For each regionk, we
+train a lightweight inverse-mapping MLP that maps the local
+blendshape coefficients to the corresponding actuator com-
+mand vector:u (k)
+t =π k
+
+ˆb(k)
+t
+
+. Each regressor is trained
+with a standard Mean Squared Error objective over paired
+data{(b (k)
+t ,u (k)
+t )}:L (k)
+map =
+πk(b(k)
+t )−u (k)
+t
+
+2
+2
+.Then the
+final motor commandu t at frametis obtained (Fig. 4(b)).
+Data collection.For each physical head, we first calibrate
+the valid actuation ranges. We then generate3000motor
+command vectors using Latin hypercube sampling within
+these bounds to ensure broad and uniform coverage of the
+feasible actuation space. For each sampled commandu i, we
+capture a synchronized imageI i of the face. From each image
+Ii, we estimate the corresponding facial parameters(b i,r i)
+using MediaPipe [70] and obtain the final supervision tuples
+{(ui,b i,r i)}for training the inverse mapping networks.
+
+===== PAGE 6 =====
+Speaker-A Audio
+Speaker-B Audio
+Audio Encoder
+(a)
+Linear Projector
+Turn-Aware 
+Alignment Attention
+(b)
+Feature
+Feature
+AZ
+BZ
+Blendshape
+Expression 
+Turn-Aware Gate
+Transformer Encoder
+Transformer Decoder Head Motion
+Semantic Mapping
+Inverse Kinematics
+Fig. 4:Overview of interaction synthesis and control.(a) Given dual-speaker audio, the talking-head model predicts multi-
+round facial motion for both speaking and listening. (b) The predicted coefficients are mapped to robot motor commands via
+region-wise regressors and neck IK, enabling physically feasible multi-round expressions on the mechanical face.
+TABLE I: Comparison of optimization strategies forau-
+tomatic mechanism design. We report success rate (SR),
+convergence time (CT), expressiveness score (Exp= P
+k αk),
+and intersection volume (IV). CT and Exp are reportedonly
+for successful runs; IV is0for successful runs and otherwise
+computed from the final design at the maximum iteration.
+Method SR(%)↑CT (s)↓Exp↑IV(mm 3)↓
+Ours w/o outer loop 20.0 25.7 8.69 2050.7
+Global Joint-Opt 0.0 – – 9690.5
+Local + Heuristic 33.3 1098.2 8.57 1690.6
+Ours 66.7 591.3 8.53 460.4
+V. EXPERIMENT
+A. Experimental Setup
+Hardware platform.Each robotic head provides 21 in-
+dependently actuated facial degrees of freedom, driven by
+GuoHua 9g digital micro servos with a 180° operating range.
+To support higher-torque head orientation, the neck is actuated
+by three NEMA 17 stepper motors. All structural components
+were fabricated using Polylactic Acid (PLA) via FDM 3D
+printing. The silicone skin is magnetically attached to the
+underlying frame, enabling rapid installation and replacement.
+Onboard deployment.All inference runs on an NVIDIA
+Jetson AGX Orin (32 GB). For actuation, the Orin commu-
+nicates via the I 2C protocol with cascaded PCA9685 PWM
+drivers, updating servo commands at 30 Hz. The Orin also
+interfaces with an eye-mounted camera, a microphone for
+audio capture, and an onboard speaker for audio playback.
+B. Evaluation of the Automatic Design Flow
+Hierarchical optimization efficacy.We evaluate our hi-
+erarchical optimization framework on 15 heads with diverse
+facial geometries. We compare against three baselines: (i)
+Ours w/o outer loop(local-only optimization), which performs
+module-level optimization but disables the outer-loop assem-
+bly refinement; (ii)Global Joint-Opt, which jointly optimizes
+all design variables using a single objective that combines
+position-keeping and collision-penalty terms; and (iii)Local +
+Heuristic Repulsion, which augments local optimization with
+a hand-crafted repulsion vector to resolve collisions during
+assembly (App. D5). All methods are optimized using L-
+BFGS. Tab. I summarizes the mean performance over 15
+design instances, where all methods share the same initializa-
+tion.Local-onlyconverges rapidly (25.7s) but fails in compact
+geometries, validating the indispensability of assembly-level
+refinement. TheGlobal Joint-Optbaseline fails in all cases:
+the coupled objective is highly non-convex, and collisions lack
+informative gradients for complex assemblies, leading to poor
+convergence.WhileLocal + Heuristicimproves feasibility
+(5/15), its reliance on suboptimal centroid-based repulsion
+significantly prolongs convergence (1098.2s) and fails to re-
+solve complex interlocks requiring amplitude scheduling. In
+contrast, our hierarchical framework achieves the highest suc-
+cess rate (10/15) and converges 1.9×faster than the heuristic
+baseline. Notably, the runtime difference betweenLocal-only
+andOurs(25.7s vs. 591.3s) indicates that collision resolution
+dominates the computational cost; however, this investment is
+strictly justified by the substantial gain in realizability while
+maintaining comparable expressiveness.
+Fig. 5(a) shows qualitative results across diverse face ge-
+ometries. We highlight two heads that deviate substantially
+from the template in both morphology and scale.Left:Jack
+exhibits a sharper, more pointed chin than the template, which
+leaves less internal clearance and imposes stricter placement
+constraints for the mouth-corner and lower-lip mechanisms.
+Right:Yodahas a markedly non-human facial structure;
+nevertheless, our pipeline successfully synthesizes a feasible
+internal mechanism layout. These examples demonstrate that
+our automatic design flow can handle large geometric vari-
+ations and generalizes beyond human-like faces, indicating
+broad applicability and robustness.
+Comparative efficiency against manual design.We fur-
+ther compare our automatic design flow with expert manual de-
+sign on a compact head geometry (scaling factorβ= 0.84rel-
+ative to the template), which leaves limited internal volume for
+mechanisms. Two senior mechanical designers independently
+performed manual layouts and iterative adjustments, including
+rework triggered by interferences discovered during assembly.
+The average manual design time is 22.8 h, substantially longer
+than our optimization runtime (11.7 min). Fig. 5(b) compares
+the resulting mouth-corner mechanism behaviors. Manual de-
+signs, driven by trial-and-error and implicit design heuristics,
+achieve weaker upward mouth-corner expressiveness and less
+skin-conforming motion trajectories, leading to reduced visual
+fidelity. In contrast, our method explicitly optimizes expres-
+siveness under geometric constraints and produces a tighter,
+more consistent upward expressiveness.
+
+===== PAGE 7 =====
+(a) 
+(b) 
+Jack Yoda
+Algorithm Design Manual Design
+Fig. 5: (a)Algorithm design versatility: CAD Assemblies
+forJackandYoda. (b)Algorithm vs. Manual: Comparison
+of mouth-corner mechanisms (red circles) on a compact head.
+TABLE II: Comparison underspeakerandlistenermodes on
+our dataset. “RT” means whether real-time use is supported.
+Method Speaker Listener RT
+LVE↓MSE↓PDD↓SID↑ FDD↓PDD↓
+FaceFormer 4.25 0.69 7.32 0.71 – – ✓
+EmoTalk 2.980.68 6.88 3.03 – – ✓
+SelfTalk 5.34 0.73 7.03 2.98 – – ✓
+DualTalk 3.79 0.57 8.743.36 29.77 9.45 ✗
+Ours 3.04 0.38 5.63 3.29 21.12 5.81 ✓
+C. Evaluation of Conversational Motion Synthesis
+Baselines and metrics.We compare against threespeaker-
+onlymethods (FaceFormer [25], EmoTalk [80], SelfTalk [79])
+and a speaker-listener baseline [82]. All methods are trained on
+our dataset. For the speaker, we evaluate lip synchronization
+(LVE), overall expression accuracy (MSE), head-pose dynam-
+ics (PDD), and motion diversity (SID). For the listener, we
+evaluate upper-face motion dynamics (FDD) and PDD.
+Quantitative results.As shown in Tab. II, our framework
+demonstrates superior performance across both conversational
+roles. In speaker mode, we achieve the lowest MSE and
+PDD, indicating that our generated expressions are both ge-
+ometrically accurate and temporally stable while maintaining
+lip-sync quality. In listener mode, we outperform the dyadic
+baseline [82]. Crucially, [82] relies on the partner’s future
+motion, restricting it to offline processing. In contrast, our
+model infers reactive behaviors solely from speaker-A/B’s
+audio, thereby enabling the real-time inference.
+D. Evaluation of Expression Mapping Results
+Baselines and metrics.We compare our semantic region-
+wise mapping against baselines spanning three common fa-
+cial representations.Landmarks: (i) nearest-neighbor retrieval
+that matches each avatar landmark to the closest sample
+in the robot dataset, and two learning-based variants that
+reduce the avatar-robot gap via (ii) [10] normalization and
+[41] normalization followed by an MLP regressor.FlAME:
+an MLP that maps per-frame FLAME parameters to motor
+commands.Blendshapes: per-frame blendshape parameters to
+TABLE III: Comparison formappinggrouped by facial
+representations. FPS is measured on Jetson AGX Orin.
+Metric Landmarks FLAME Blendshapes
+NNR Norm. [10] + MLP Norm. [41] + MLPMLP MLP Ours
+LSE-D↓15.59 14.52 13.74 13.06 12.68 10.61LSE-C↑ 0.34 1.94 2.39 2.42 2.58 3.19FPS↑ 6.36 6.31 6.19 2408.552478.262396.31
+motor commands. All learning-based methods are trained with
+an MSE loss. We assess the robot’s audio–lip synchronization
+using Lip Sync Error Distance (LSE-D) and Lip Sync Error
+Confidence (LSE-C) [86], as well as on-device FPS. Full-face
+expression fidelity is evaluated via our user study (Sec. V-F).
+Quantitative results.Tab. III shows comparisons across
+the baselines. Our semantic region-wise mapping achieves
+the best audio–lip synchronization while maintaining high
+throughput sufficient for real-time conversational interaction.
+Normalization-based landmark methods [110, 10, 41] reduce
+the sim-to-real gap, but their performance is highly sensitive
+to the robot’s facial geometry and the camera viewpoint. In
+addition, landmark pipelines introduce extra inference latency
+because they require rendering a 2D avatar frame and running
+landmark detection before generating motor commands. In
+contrast, FLAME and blendshape parameters provide identity-
+agnostic representations. However, a single per-frame MLP
+underperforms our approach because it must learn cross-region
+correspondences implicitly from data. By encoding semantic
+correspondences as an explicit prior, our network achieves
+superior synchronization with a smaller model.
+E. End-to-End Conversation Demonstration
+We show our end-to-end system in two interaction scenarios
+(Fig. 6). Complete visualization is provided in theSupple-
+mentary Videoand App. H.Human-robot interaction.We
+integrate the Doubao V oice Model as the conversational en-
+gine, enabling fluid, low-latency spoken dialogue with human
+users (Fig. 6(a)).Dyadic robot-robot dialogue.We stage a
+hypothetical reunion scene fromTitanic. Driven by input au-
+dio, the system generates high-fidelity lip synchronization for
+the speaker (Rose) while synthesizing contextually congruent
+reactive expressions for the listener (Jack) (Fig. 6(b)).
+End-to-end build time breakdown.Tab. IV details the
+mean time required to realize a new character, from mech-
+anism synthesis to a fully deployable robot. Our framework
+significantly compresses the mechanism design and mapping
+(Stages 1, 5, 6), which have traditionally served as the primary
+temporal bottlenecks in robotic customization. While the phys-
+ical realization (Stages 2, 3, 4) currently occupies the majority
+of the timeline (measured with a single operator and machine),
+these processes are inherently parallelizable and can be further
+accelerated through scaled manufacturing resources.
+F . User study
+To evaluate the perceived quality of our real-time interaction
+pipeline, we conducted a perceptual study using four rep-
+resentative dialogue excerpts. We recruited 100 participants.
+For each excerpt, participants were shown the reference clip
+
+===== PAGE 8 =====
+(a)
+(b)
+I ha- ve a   drea- m that       one day…
+I             sur- vived and found a man. Had grandchildren even.
+Fig. 6:End-to-end system visualization across interaction scenarios.(a)Human-Robot Interaction: Real-time conver-
+sational gestures during a user-robot dialogue. The top row is the expression synthesis. (b)Dyadic Role-Play (Titanic):
+Reenacting the scene dynamics with expressions corresponding to the dialogue betweenRose(speaker) andJack(listener).
+TABLE IV:End-to-end time breakdown.1: automatic design
+optimization; 2: 3D printing; 3: silicone face skin; 4: assembly;
+5: mapping dataset collection; 6: mapping network training.
+Thetotaltime assumes parallel execution of Stages 2 and 3.
+Stage 1 2 3 4 5 6 Total
+Time (h) 0.16 21.47 20.50 3.83 0.25 0.13 25.84
+together with five robot interaction variants:Ours,speaker-
+only,no neck motion,random neck motion, andmouth-only
+mapping. Participants then rated theoverall performance
+on a 10-point scale. Fig. 7(a) shows thatOursachieves the
+highest overall scores. The ablations suggest three consistent
+findings: (i) listener backchannel cues and subtle facial re-
+sponses substantially improve perceived interaction quality, (ii)
+coordinated neck motion makes the delivery more natural than
+facial motion alone [110], and (iii) realism cannot be explained
+by lip synchronization alone [42, 101], as full-face expressions
+provide essential cues beyond the mouth region.
+We also evaluated mapping quality using three sentences.
+Fig. 7(b) shows that our mapping produces more realistic and
+natural expressions, with a smaller gap (details in App. I).
+VI. CONCLUSION
+We present a unified framework that solves the scalabil-
+ity synthesis in animatronic personalization. By coupling a
+collision-driven automated hardware design pipeline with a
+（a）
+（b）
+Fig. 7:User study results.(a) Overall interaction performance
+on four excerpts. (b) Mapping quality on three sentences.
+real-time conversational motion engine, we achieved rapid
+2D-to-3D physical realization and immersive bidirectional
+interaction. This work lays the critical groundwork for a future
+where thousands of robots with distinct identities can be
+efficiently manufactured and integrated into human society.
+
+===== PAGE 9 =====
+REFERENCES
+[1] Ho Seok Ahn, Dong-Wook Lee, Dongwoon Choi, Duk-
+Yeon Lee, Manhong Hur, and Hogil Lee. Designing of
+android head system by applying facial muscle mecha-
+nism of humans. In2012 12th IEEE-RAS International
+Conference on Humanoid Robots (Humanoids 2012),
+pages 799–804. IEEE, 2012.
+[2] Brian Allison, Goldie Nejat, and Emmeline Kao. The
+Design of an Expressive Humanlike Socially Assistive
+Robot.Journal of Mechanisms and Robotics, 1(1),
+2008.
+[3] Moritz B ¨acher, Stelian Coros, and Bernhard
+Thomaszewski. Linkedit: Interactive linkage editing
+using symbolic kinematics.ACM Transactions on
+Graphics (TOG), 34(4):1–8, 2015.
+[4] Alexei Baevski, Yuhao Zhou, Abdelrahman Mohamed,
+and Michael Auli. wav2vec 2.0: A framework for self-
+supervised learning of speech representations.Advances
+in neural information processing systems, 33:12449–
+12460, 2020.
+[5] Karsten Berns and Jochen Hirth. Control of facial
+expressions of the humanoid robot head ROMAN. In
+2006 IEEE/RSJ international conference on intelligent
+robots and systems, pages 3119–3124. IEEE, 2006.
+[6] Bernd Bickel, Peter Kaufmann, M ´elina Skouras, Bern-
+hard Thomaszewski, Derek Bradley, Thabo Beeler,
+Phil Jackson, Steve Marschner, Wojciech Matusik, and
+Markus Gross. Physical face cloning.ACM Transac-
+tions on Graphics (TOG), 31(4):1–10, 2012.
+[7] Rodney A Brooks, Cynthia Breazeal, Matthew Mar-
+janovi´c, Brian Scassellati, and Matthew M Williamson.
+The Cog project: Building a humanoid robot. In
+International workshop on computation for metaphors,
+analogy, and agents, pages 52–87. Springer, 1998.
+[8] Jacques Cal `ı, Dan A Calian, Cristina Amati, Re-
+becca Kleinberger, Anthony Steed, Jan Kautz, and Tim
+Weyrich. 3D-printing of non-assembly, articulated mod-
+els.ACM Transactions on Graphics (TOG), 31(6):1–8,
+2012.
+[9] Duygu Ceylan, Wilmot Li, Niloy J Mitra, Maneesh
+Agrawala, and Mark Pauly. Designing and fabricating
+mechanical automata from mocap sequences.ACM
+Transactions on Graphics (TOG), 32(6):1–11, 2013.
+[10] Boyuan Chen, Yuhang Hu, Lianfeng Li, Sara Cum-
+mings, and Hod Lipson. Smile like you mean it:
+Driving animatronic robotic face with learned models.
+In2021 IEEE International Conference on Robotics and
+Automation (ICRA), pages 2739–2746. IEEE, 2021.
+[11] Hejia Chen, Haoxian Zhang, Shoulong Zhang, Xiao-
+qiang Liu, Sisi Zhuang, Yuan Zhang, Pengfei Wan,
+Di Zhang, and Shuai Li. Cafe-talk: Generating 3d
+talking face animation with multimodal coarse-and fine-
+grained control.arXiv preprint arXiv:2503.14517,
+2025.
+[12] Junjie Chen, Fei Wang, Zhihao Huang, Qing Zhou, Kun
+Li, Dan Guo, Linfeng Zhang, and Xun Yang. Towards
+Seamless Interaction: Causal Turn-Level Modeling of
+Interactive 3D Conversational Head Dynamics.arXiv
+preprint arXiv:2512.15340, 2025.
+[13] Yuming Chong, Jingyu Li, Xinyu Liu, Xiaojun Wang,
+Jiuzuo Huang, Nanze Yu, and Xiao Long. Three-
+dimensional anthropometric analysis of eyelid aging
+among Chinese women.Journal of Plastic, Reconstruc-
+tive & Aesthetic Surgery, 74(1):135–142, 2021.
+[14] Xuangeng Chu, Nabarun Goswami, Ziteng Cui, Hanqin
+Wang, and Tatsuya Harada. ARTalk: Speech-Driven
+3D Head Animation via Autoregressive Model.arXiv
+preprint arXiv:2502.20323, 2025.
+[15] Xuangeng Chu, Ruicong Liu, Yifei Huang, Yun Liu,
+Yichen Peng, and Bo Zheng. UniLS: End-to-End
+Audio-Driven Avatars for Unified Listening and Speak-
+ing.arXiv preprint arXiv:2512.09327, 2025.
+[16] Lorenzo Cominelli, Gustav Hoegen, and Danilo
+De Rossi. Abel: integrating humanoid body, emotions,
+and time perception to investigate social interaction and
+human cognition.Applied Sciences, 11(3):1070, 2021.
+[17] Stelian Coros, Bernhard Thomaszewski, Gioacchino
+Noris, Shinjiro Sueda, Moira Forberg, Robert W Sum-
+ner, Wojciech Matusik, and Bernd Bickel. Computa-
+tional design of mechanical characters.ACM Transac-
+tions on Graphics (TOG), 32(4):1–12, 2013.
+[18] Daniel Cudeiro, Timo Bolkart, Cassidy Laidlaw, Anurag
+Ranjan, and Michael J Black. Capture, learning, and
+synthesis of 3D speaking styles. InProceedings of the
+IEEE/CVF conference on computer vision and pattern
+recognition, pages 10101–10111, 2019.
+[19] Radek Dan ˇeˇcek, Kiran Chhatre, Shashank Tripathi,
+Yandong Wen, Michael Black, and Timo Bolkart. Emo-
+tional speech-driven animation with content-emotion
+disentanglement. InSIGGRAPH Asia 2023 Conference
+Papers, pages 1–13, 2023.
+[20] Richard L. Drake, A. Wayne V ogl, and Adam W. M.
+Mitchell.Gray’s Anatomy for Students. Churchill
+Livingstone, Philadelphia, PA, 3rd edition, 2015. ISBN
+978-0702051319.
+[21] Tao Du, Adriana Schulz, Bo Zhu, Bernd Bickel, and
+Wojciech Matusik. Computational multicopter design.
+ACM Transactions on Graphics (TOG), 35(6):1–10,
+2016.
+[22] Paul Ekman and Wallace V Friesen. Facial action
+coding system.Environmental Psychology & Nonverbal
+Behavior, 1978.
+[23] Xiangyu Fan, Jiaqi Li, Zhiqian Lin, Weiye Xiao, and
+Lei Yang. Unitalker: Scaling up audio-driven 3d facial
+animation through a unified model. InEuropean Con-
+ference on Computer Vision, pages 204–221. Springer,
+2024.
+[24] Xuanhe Fan, Huijuan Zhao, Shuangjiang He, Li Li, and
+Li Yu. A Soft-Skin Facial Robot Capable of Real-Time
+Emotion-Driven Actuation Through Visual Perception.
+InInternational Conference on Intelligent Robotics and
+
+===== PAGE 10 =====
+Applications, pages 54–66. Springer, 2025.
+[25] Yingruo Fan, Zhaojiang Lin, Jun Saito, Wenping Wang,
+and Taku Komura. Faceformer: Speech-driven 3d facial
+animation with transformers. InProceedings of the
+IEEE/CVF conference on computer vision and pattern
+recognition, pages 18770–18780, 2022.
+[26] Zanwar Faraj, Mert Selamet, Carlos Morales, Patricio
+Torres, Maimuna Hossain, Boyuan Chen, and Hod
+Lipson. Facially expressive humanoid robotic face.
+HardwareX, 9:e00117, 2021.
+[27] Leopoldina Fortunati, Alessandra Sorrentino, Laura
+Fiorini, and Filippo Cavallo. The rise of the roboid.
+International Journal of Social Robotics, 13(6):1457–
+1471, 2021.
+[28] Moritz Geilinger, Roi Poranne, Ruta Desai, Bern-
+hard Thomaszewski, and Stelian Coros. Skaterbots:
+Optimization-based design and motion synthesis for
+robotic creatures with legs and wheels.ACM Trans-
+actions on Graphics (TOG), 37(4):1–12, 2018.
+[29] Kieran Gilday, Dohyeon Pyeon, S Dhanush, Kyu-Jin
+Cho, and Josie Hughes. Exploiting passive behaviours
+for diverse musical playing using the parametric hand.
+Frontiers in Robotics and AI, 11:1463744, 2024.
+[30] Kieran Gilday, Chapa Sirithunge, Fumiya Iida, and Josie
+Hughes. Embodied manipulation with past and future
+morphologies through an open parametric hand design.
+Science Robotics, 10(102):eads6437, 2025.
+[31] Dylan F Glas, Takashi Minato, Carlos T Ishi, Tatsuya
+Kawahara, and Hiroshi Ishiguro. Erica: The erato
+intelligent conversational android. In2016 25th IEEE
+International symposium on robot and human inter-
+active communication (RO-MAN), pages 22–29. IEEE,
+2016.
+[32] David Ha. Reinforcement learning for improving agent
+design.Artificial life, 25(4):352–365, 2019.
+[33] Sehoon Ha, Stelian Coros, Alexander Alspach,
+Joohyung Kim, and Katsu Yamane. Task-based limb
+optimization for legged robots. In2016 IEEE/RSJ
+International Conference on Intelligent Robots and
+Systems (IROS), pages 2062–2068. IEEE, 2016.
+[34] Ahsan Habib, Sumit K Das, Ioana-Corina Bogdan,
+David Hanson, and Dan O Popa. Learning human-
+like facial expressions for android Phillip K. Dick. In
+2014 IEEE International Conference on Automation
+Science and Engineering (CASE), pages 1159–1165.
+IEEE, 2014.
+[35] David Hanson, Giovanni Pioggia, S Dinelli, Fabio
+Di Francesco, R Francesconi, and Danilo De Rossi.
+Identity Emulation (IE): Bio-inspired Facial Expression
+Interfaces for Emotive Robots. InAAAI Mobile Robot
+Competition, pages 72–82, 2002.
+[36] Takuya Hashimoto, Sachio Hiramatsu, and Hiroshi
+Kobayashi. Development of the face robot SAY A for
+rich facial expressions. In2006 International Confer-
+ence on Mechatronics and Automation, pages 25–30.
+IEEE, 2006.
+[37] Takuya Hashimoto, Sachio Hiramatsu, and Hiroshi
+Kobayashi. Dynamic display of facial expressions on
+the face robot made by using a life mask. InHumanoids
+2008-8th IEEE-RAS International Conference on Hu-
+manoid Robots, pages 521–526. IEEE, 2008.
+[38] Zhanpeng He and Matei Ciocarlie. Morph: Design
+co-optimization with reinforcement learning via a dif-
+ferentiable hardware model proxy. In2024 IEEE
+International Conference on Robotics and Automation
+(ICRA), pages 7764–7771. IEEE, 2024.
+[39] Marcel Heisler and Christian Becker-Asano. An iPhone
+Pro is All You Need: Mimicking Facial Expressions
+on an Android Robot Head. In2025 20th ACM/IEEE
+International Conference on Human-Robot Interaction
+(HRI), pages 1347–1351. IEEE, 2025.
+[40] Jonathan Hiller and Hod Lipson. Automatic design
+and manufacture of soft robots.IEEE Transactions on
+Robotics, 28(2):457–466, 2011.
+[41] Yuhang Hu, Boyuan Chen, Jiong Lin, Yunzhe Wang,
+Yingke Wang, Cameron Mehlman, and Hod Lipson.
+Human-robot facial coexpression.Science Robotics, 9
+(88):eadi4724, 2024.
+[42] Yuhang Hu, Jiong Lin, Judah Allen Goldfeder,
+Philippe M Wyder, Yifeng Cao, Steven Tian, Yunzhe
+Wang, Jingran Wang, Mengmeng Wang, Jie Zeng, et al.
+Learning realistic lip motions for humanoid face robots.
+Science Robotics, 11(110):eadx3017, 2026.
+[43] Simon Huber, Roi Poranne, and Stelian Coros. De-
+signing actuation systems for animatronic figures via
+globally optimal discrete search.ACM Transactions on
+Graphics (TOG), 40(4):1–10, 2021.
+[44] Hisashi Ishihara, Yuichiro Yoshikawa, and Minoru
+Asada. Realistic child robot “affetto” for understanding
+the caregiver-child attachment relationship that guides
+the child development. In2011 ieee international con-
+ference on development and learning (icdl), volume 2,
+pages 1–5. IEEE, 2011.
+[45] Sharfin Islam, Zhanpeng He, and Matei Ciocarlie.
+Task-Based Design and Policy Co-Optimization for
+Tendon-driven Underactuated Kinematic Chains. In
+2024 IEEE/RSJ International Conference on Intelligent
+Robots and Systems (IROS), pages 12016–12023. IEEE,
+2024.
+[46] Kazuko Itoh, Hiroyasu Miwa, Massimiliano Zecca,
+Hideaki Takanobu, Stefano Roccella, Maria Chiara Car-
+rozza, Paolo Dario, and Atsuo Takanishi.Mechanical
+design of emotion expression humanoid robot we-4rii.
+Springer, 2006.
+[47] Xiaozhong Ji, Chuming Lin, Zhonggan Ding, Ying
+Tai, Junwei Zhu, Xiaobin Hu, Donghao Luo, Yanhao
+Ge, and Chengjie Wang. Realtalk: Real-time and
+realistic audio-driven face generation with 3d facial
+prior-guided identity alignment network.arXiv preprint
+arXiv:2406.18284, 2024.
+[48] Kenji Kaneko, Fumio Kanehiro, Mitsuharu Morisawa,
+Kanako Miura, Shin’ichiro Nakaoka, and Shuuji Kajita.
+
+===== PAGE 11 =====
+Cybernetic human HRP-4C. In2009 9th IEEE-RAS
+International Conference on Humanoid Robots, pages
+7–14. IEEE, 2009.
+[49] Kento Kawaharazuka, Shunnosuke Yoshimura, Temma
+Suzuki, Kei Okada, and Masayuki Inaba. Design
+Optimization of Wire Arrangement With Variable Re-
+lay Points in Numerical Simulation for Tendon-Driven
+Robots.IEEE Robotics and Automation Letters, 9(2):
+1388–1395, 2023.
+[50] Kento Kawaharazuka, Kei Okada, and Masayuki In-
+aba. Robot Design Optimization with Rotational and
+Prismatic Joints using Black-Box Multi-Objective Op-
+timization. In2024 IEEE/RSJ International Conference
+on Intelligent Robots and Systems (IROS), pages 4571–
+4577. IEEE, 2024.
+[51] Hiroshi Kobayashi and Fumio Hara. Study on face
+robot for active human interface-mechanisms of face
+robot and expression of 6 basic facial expressions. In
+Proceedings of 1993 2nd IEEE International Workshop
+on Robot and Human Communication, pages 276–281.
+IEEE, 1993.
+[52] Hiroshi Kobayashi, T Tsuji, and K Kikuchi. Study of a
+face robot platform as a kansei medium. In2000 26th
+Annual Conference of the IEEE Industrial Electronics
+Society. IECON 2000. 2000 IEEE International Con-
+ference on Industrial Electronics, Control and Instru-
+mentation. 21st Century Technologies, volume 1, pages
+481–486. IEEE, 2000.
+[53] Hiroshi Kobayashi, Yoshiro Ichikawa, Masaru Senda,
+and Taichi Shiiba. Realization of realistic and rich
+facial expressions by face robot. InProceedings
+2003 IEEE/RSJ International Conference on Intelligent
+Robots and Systems (IROS 2003)(Cat. No. 03CH37453),
+volume 2, pages 1123–1128. IEEE, 2003.
+[54] Milin Kodnongbua, Ian Good, Yu Lou, Jeffrey Lipton,
+and Adriana Schulz. Computational design of passive
+grippers.ACM Transactions on Graphics (TOG), 41(4):
+2–12, 2022.
+[55] Weijie Kong, Qi Tian, Zijian Zhang, Rox Min, Zuozhuo
+Dai, Jin Zhou, Jiangfeng Xiong, Xin Li, Bo Wu, Jianwei
+Zhang, et al. Hunyuanvideo: A systematic framework
+for large video generative models.arXiv preprint
+arXiv:2412.03603, 2024.
+[56] Dong-Wook Lee, Tae-Geun Lee, B So, Moosung Choi,
+Eun-Cheol Shin, K Yang, Moon-Hong Baek, Hong-
+Seok Kim, and Ho-Gil Lee. Development of an android
+for emotional expression and human interaction. In
+Seventeenth world congress the international federation
+of automatic control, Seoul, 2008.
+[57] J. P. Lewis, Ken ichi Anjyo, Taehyun Rhee, Mengjie
+Zhang, Fr´ed´eric H. Pighin, and Zhigang Deng. Practice
+and Theory of Blendshape Facial Models. InEuro-
+graphics, 2014.
+[58] Boren Li, Hang Li, and Hangxin Liu. Driving Ani-
+matronic Robot Facial Expression From Speech.arXiv
+preprint arXiv:2403.12670, 2024.
+[59] Jian Li, Sheldon Andrews, Krisztian G Birkas, and
+Paul G Kry. Task-based design of cable-driven artic-
+ulated mechanisms. InProceedings of the 1st Annual
+ACM Symposium on Computational Fabrication, pages
+1–12, 2017.
+[60] Peizhen Li, Longbing Cao, Xiao-Ming Wu, Runze
+Yang, and Xiaohan Yu. X2C: A Dataset Featuring
+Nuanced Facial Expressions for Realistic Humanoid
+Imitation.arXiv preprint arXiv:2505.11146, 2025.
+[61] Tianye Li, Timo Bolkart, Michael J Black, Hao Li, and
+Javier Romero. Learning a model of facial shape and
+expression from 4D scans.ACM Trans. Graph., 36(6):
+194–1, 2017.
+[62] Wenji Li, Zhaojun Wang, Ruitao Mai, Pengxiang Ren,
+Qinchang Zhang, Yutao Zhou, Ning Xu, JiaFan Zhuang,
+Bin Xin, Liang Gao, et al. Modular design automation
+of the morphologies, controllers, and vision systems for
+intelligent robots: a survey.Visual Intelligence, 1(1):2,
+2023.
+[63] Chyi-Yeu Lin, Chang-Kuo Tseng, Wei-Chung Teng,
+Wei-Chen Lee, Chung-Hsien Kuo, Hung-Yan Gu, Kuo-
+Liang Chung, and Chin-Shyurng Fahn. The realization
+of robot theater: Humanoid robots and theatric perfor-
+mance. In2009 International Conference on Advanced
+Robotics, pages 1–6. IEEE, 2009.
+[64] Gaojie Lin, Jianwen Jiang, Jiaqi Yang, Zerong
+Zheng, Chao Liang, Yuan Zhang, and Jingtuo Liu.
+Omnihuman-1: Rethinking the scaling-up of one-stage
+conditioned human animation models. InProceedings
+of the IEEE/CVF International Conference on Com-
+puter Vision, pages 13847–13858, 2025.
+[65] Hod Lipson and Jordan B Pollack. Automatic design
+and manufacture of robotic lifeforms.Nature, 406
+(6799):974–978, 2000.
+[66] Chang Liu, Qunfen Lin, Zijiao Zeng, and Ye Pan.
+Emoface: Audio-driven emotional 3d face animation.
+In2024 IEEE Conference Virtual Reality and 3D User
+Interfaces (VR), pages 387–397. IEEE, 2024.
+[67] Xiaofeng Liu, Yizhou Chen, Jie Li, and Angelo Can-
+gelosi. Real-time robotic mirrored behavior of facial
+expressions and head motions based on lightweight
+networks.IEEE Internet of Things Journal, 10(2):1401–
+1413, 2022.
+[68] Xiaofeng Liu, Rongrong Ni, Biao Yang, Siyang Song,
+and Angelo Cangelosi. Unlocking human-like facial
+expressions in humanoid robots: A novel approach
+for action unit driven facial expression disentangled
+synthesis.IEEE Transactions on Robotics, 40:3850–
+3865, 2024.
+[69] Xin Lu, Chuanqing Zhuang, Chenxi Jin, Zhengda
+Lu, Yiqun Wang, Wu Liu, and Jun Xiao. LSF-
+Animation: Label-Free Speech-Driven Facial Animation
+via Implicit Feature Representation.arXiv preprint
+arXiv:2510.21864, 2025.
+[70] Camillo Lugaresi, Jiuqiang Tang, Hadon Nash, Chris
+McClanahan, Esha Uboweja, Michael Hays, Fan Zhang,
+
+===== PAGE 12 =====
+Chuo-Ling Chang, Ming Guang Yong, Juhyun Lee,
+Wan-Teh Chang, Wei Hua, Manfred Georg, and
+Matthias Grundmann. MediaPipe: A Framework for
+Building Perception Pipelines.ArXiv, abs/1906.08172,
+2019.
+[71] Ingo L ¨utkebohle, Frank Hegel, Simon Schulz, Matthias
+Hackel, Britta Wrede, Sven Wachsmuth, and Ger-
+hard Sagerer. The bielefeld anthropomorphic robot
+head “Flobi”. In2010 IEEE international conference
+on robotics and automation, pages 3384–3391. IEEE,
+2010.
+[72] Pragna Mannam, Xingyu Liu, Ding Zhao, Jean Oh, and
+Nancy Pollard. Design and control co-optimization for
+automated design iteration of dexterous anthropomor-
+phic soft robotic hands. In2024 IEEE 7th International
+Conference on Soft Robotics (RoboSoft), pages 332–
+339. IEEE, 2024.
+[73] Vittorio Megaro, Bernhard Thomaszewski, Damien
+Gauge, Eitan Grinspun, Stelian Coros, and Markus H
+Gross. ChaCra: An Interactive Design System for
+Rapid Character Crafting. InSymposium on Computer
+Animation, pages 123–130, 2014.
+[74] Shin’ichiro Nakaoka, Fumio Kanehiro, Kanako Miura,
+Mitsuharu Morisawa, Kiyoshi Fujiwara, Kenji Kaneko,
+Shuuji Kajita, and Hirohisa Hirukawa. Creating facial
+motions of Cybernetic Human HRP-4C. In2009
+9th IEEE-RAS International Conference on Humanoid
+Robots, pages 561–567. IEEE, 2009.
+[75] Evonne Ng, Javier Romero, Timur Bagautdinov, Shaojie
+Bai, Trevor Darrell, Angjoo Kanazawa, and Alexander
+Richard. From audio to photoreal embodiment: Synthe-
+sizing humans in conversations. InProceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 1001–1010, 2024.
+[76] Celia Nieto Agraz, Pascal Hinrichs, Marco Eichelberg,
+and Andreas Hein. Is the robot spying on me? a study
+on perceived privacy in telepresence scenarios in a care
+setting with mobile and humanoid robots.International
+Journal of Social Robotics, 17(3):363–377, 2025.
+[77] Jun-Ho Oh, David Hanson, Won-Sup Kim, Young Han,
+Jung-Yup Kim, and Ill-Woo Park. Design of android
+type humanoid robot Albert HUBO. In2006 IEEE/RSJ
+International Conference on Intelligent Robots and Sys-
+tems, pages 1428–1433. IEEE, 2006.
+[78] Jia Pan, Sachin Chitta, and Dinesh Manocha. FCL:
+A general purpose library for collision and proxim-
+ity queries. In2012 IEEE international conference
+on robotics and automation, pages 3859–3866. IEEE,
+2012.
+[79] Ziqiao Peng, Yihao Luo, Yue Shi, Hao Xu, Xiangyu
+Zhu, Hongyan Liu, Jun He, and Zhaoxin Fan. Self-
+talk: A self-supervised commutative training diagram to
+comprehend 3d talking faces. InProceedings of the 31st
+ACM International Conference on Multimedia, pages
+5292–5301, 2023.
+[80] Ziqiao Peng, Haoyu Wu, Zhenbo Song, Hao Xu, Xi-
+angyu Zhu, Jun He, Hongyan Liu, and Zhaoxin Fan.
+Emotalk: Speech-driven emotional disentanglement for
+3d face animation. InProceedings of the IEEE/CVF
+international conference on computer vision, pages
+20687–20697, 2023.
+[81] Ziqiao Peng, Wentao Hu, Yue Shi, Xiangyu Zhu, Xi-
+aomei Zhang, Hao Zhao, Jun He, Hongyan Liu, and
+Zhaoxin Fan. Synctalk: The devil is in the synchroniza-
+tion for talking head synthesis. InProceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 666–676, 2024.
+[82] Ziqiao Peng, Yanbo Fan, Haoyu Wu, Xuan Wang,
+Hongyan Liu, Jun He, and Zhaoxin Fan. Dualtalk: Dual-
+speaker interaction for 3d talking head conversations.
+InProceedings of the Computer Vision and Pattern
+Recognition Conference, pages 21055–21064, 2025.
+[83] Ziqiao Peng, Wentao Hu, Junyuan Ma, Xiangyu Zhu,
+Xiaomei Zhang, Hao Zhao, Hui Tian, Jun He, Hongyan
+Liu, and Zhaoxin Fan. SyncTalk++: High-Fidelity and
+Efficient Synchronized Talking Heads Synthesis Using
+Gaussian Splatting.arXiv preprint arXiv:2506.14742,
+2025.
+[84] Ziqiao Peng, Jiwen Liu, Haoxian Zhang, Xiaoqiang Liu,
+Songlin Tang, Pengfei Wan, Di Zhang, Hongyan Liu,
+and Jun He. Omnisync: Towards universal lip syn-
+chronization via diffusion transformers.arXiv preprint
+arXiv:2505.21448, 2025.
+[85] Francesco Penta, Cesare Rossi, and Sergio Savino.
+Analysis of suitable geometrical parameters for design-
+ing a tendon-driven under-actuated mechanical finger.
+Frontiers of Mechanical Engineering, 11(2):184–194,
+2016.
+[86] KR Prajwal, Rudrabha Mukhopadhyay, Vinay P Nam-
+boodiri, and CV Jawahar. A lip sync expert is all
+you need for speech to lip generation in the wild. In
+Proceedings of the 28th ACM international conference
+on multimedia, pages 484–492, 2020.
+[87] Alexander Richard, Michael Zollh ¨ofer, Yandong Wen,
+Fernando De la Torre, and Yaser Sheikh. Meshtalk:
+3d face animation from speech using cross-modality
+disentanglement. InProceedings of the IEEE/CVF in-
+ternational conference on computer vision, pages 1173–
+1182, 2021.
+[88] Charles Schaff, David Yunis, Ayan Chakrabarti, and
+Matthew R Walter. Jointly learning to construct and
+control agents using deep reinforcement learning. In
+2019 international conference on robotics and automa-
+tion (ICRA), pages 9798–9805. IEEE, 2019.
+[89] Qincheng Sheng, Wei Tang, Hao Qin, Yujie Kong,
+Haokai Dai, Yiding Zhong, Yonghao Wang, Jun Zou,
+and Huayong Yang. A review on an AI-driven face
+robot for human-robot expression interaction.Science
+China Technological Sciences, 68(10):2010301, 2025.
+[90] Bowen Shi, Andros Tjandra, John Hoffman, Helin
+Wang, Yi-Chiao Wu, Luya Gao, Julius Richter, Matt
+Le, Apoorv Vyas, Sanyuan Chen, et al. SAM Au-
+
+===== PAGE 13 =====
+dio: Segment Anything in Audio.arXiv preprint
+arXiv:2512.18099, 2025.
+[91] Tom ´as Soucek and Jakub Lokoc. Transnet v2: An
+effective deep network architecture for fast shot tran-
+sition detection. InProceedings of the 32nd ACM
+International Conference on Multimedia, pages 11218–
+11221, 2024.
+[92] Tao Sun, Bo Wang, and Xinming Huo. Knowledge-
+driven automated design of industrial robots: A unified
+graph-based framework with multi-engine reasoning.
+Advanced Engineering Informatics, 69:103995, 2026.
+[93] Bernhard Thomaszewski, Stelian Coros, Damien
+Gauge, Vittorio Megaro, Eitan Grinspun, and Markus
+Gross. Computational design of linkage-based charac-
+ters.ACM Transactions on Graphics (TOG), 33(4):1–9,
+2014.
+[94] Minh Tran, Di Chang, Maksim Siniukov, and Moham-
+mad Soleymani. Dim: Dyadic interaction modeling for
+social behavior generation. InEuropean Conference on
+Computer Vision, pages 484–503. Springer, 2024.
+[95] Tingwu Wang, Yuhao Zhou, Sanja Fidler, and Jimmy
+Ba. Neural graph evolution: Towards efficient automatic
+robot design.arXiv preprint arXiv:1906.05370, 2019.
+[96] Wu Weiguo, Men Qingmei, and Wang Yu. Development
+of the humanoid head portrait robot system with flexible
+face and expression. In2004 IEEE International Con-
+ference on Robotics and Biomimetics, pages 757–762.
+IEEE, 2004.
+[97] Bowen Wu, Chaoran Liu, Carlos T Ishi, Takashi Minato,
+and Hiroshi Ishiguro. Retargeting human facial expres-
+sion to human-like robotic face through neural network
+surrogate-based optimization. In2024 IEEE/RSJ Inter-
+national Conference on Intelligent Robots and Systems
+(IROS), pages 4724–4730. IEEE, 2024.
+[98] Jinbo Xing, Menghan Xia, Yuechen Zhang, Xiaodong
+Cun, Jue Wang, and Tien-Tsin Wong. Codetalker:
+Speech-driven 3d facial animation with discrete motion
+prior. InProceedings of the IEEE/CVF Conference
+on Computer Vision and Pattern Recognition, pages
+12780–12790, 2023.
+[99] Jie Xu, Tao Du, Michael Foshey, Beichen Li, Bo Zhu,
+Adriana Schulz, and Wojciech Matusik. Learning to
+fly: computational controller design for hybrid uavs with
+reinforcement learning.ACM Transactions on Graphics
+(TOG), 38(4):1–12, 2019.
+[100] Jie Xu, Tao Chen, Lara Zlokapa, Michael Foshey,
+Wojciech Matusik, Shinjiro Sueda, and Pulkit Agrawal.
+An End-to-End Differentiable Framework for Contact-
+Aware Robot Design. InRobotics: Science & Systems,
+2021.
+[101] Zhuoxiong Xu, Xuanchen Li, Yuhao Cheng, Fei Xu,
+Yichao Yan, and Xiaokang Yang. SingingBot: An
+Avatar-Driven System for Robotic Face Singing Per-
+formance.arXiv preprint arXiv:2601.02125, 2026.
+[102] Dongsheng Yang, Wataru Sato, Qianying Liu, Takashi
+Minato, Shushi Namba, and Shin’ya Nishida. Optimiz-
+ing facial expressions of an android robot effectively:
+a bayesian optimization approach. In2022 IEEE-RAS
+21st International Conference on Humanoid Robots
+(Humanoids), pages 542–549. IEEE, 2022.
+[103] Dongsheng Yang, Qianying Liu, Wataru Sato, Takashi
+Minato, Chaoran Liu, and Shin’ya Nishida. HAPI:
+A Model for Learning Robot Facial Expressions from
+Human Preferences.arXiv preprint arXiv:2503.17046,
+2025.
+[104] Sha Yi, Xueqian Bai, Adabhav Singh, Jianglong Ye,
+Michael T Tolley, and Xiaolong Wang. Co-Design
+of Soft Gripper with Neural Physics.arXiv preprint
+arXiv:2505.20404, 2025.
+[105] Dong Zhang, Jingwei Peng, Yuyang Jiao, Jiayuan Gu,
+Jingyi Yu, and Jiahao Chen. ExFace: Expressive
+Facial Control for Humanoid Robots with Diffusion
+Transformers and Bootstrap Training.arXiv preprint
+arXiv:2504.14477, 2025.
+[106] Ran Zhang, Thomas Auzinger, Duygu Ceylan, Wilmot
+Li, and Bernd Bickel. Functionality-aware retargeting
+of mechanisms to 3D shapes.ACM Transactions on
+Graphics (TOG), 36(4):1–13, 2017.
+[107] Wenxuan Zhang, Xiaodong Cun, Xuan Wang, Yong
+Zhang, Xi Shen, Yu Guo, Ying Shan, and Fei Wang.
+Sadtalker: Learning realistic 3d motion coefficients for
+stylized audio-driven single image talking face anima-
+tion. InProceedings of the IEEE/CVF conference on
+computer vision and pattern recognition, pages 8652–
+8661, 2023.
+[108] Yanghai Zhang, Changyi Liu, Keting Fu, Wenbin Zhou,
+Qingdu Li, and Jianwei Zhang. Fabg: End-to-end
+imitation learning for embodied affective human-robot
+interaction.arXiv preprint arXiv:2503.01363, 2025.
+[109] Yuang Zhang, Junqi Cheng, Haoyu Zhao, Jiaxi Gu,
+Fangyuan Zou, Zenghui Lu, and Peng Shu. Shoulder-
+Shot: Generating Over-the-Shoulder Dialogue Videos.
+arXiv preprint arXiv:2508.07597, 2025.
+[110] Zongzheng Zhang, Jiawen Yang, Ziqiao Peng, Meng
+Yang, Jianzhu Ma, Lin Cheng, Huazhe Xu, Hang Zhao,
+and Hao Zhao. Morpheus: A Neural-driven Animatronic
+Face with Hybrid Actuation and Diverse Emotion Con-
+trol.arXiv preprint arXiv:2507.16645, 2025.
+[111] Allan Zhao, Jie Xu, Mina Konakovi ´c-Lukovi´c,
+Josephine Hughes, Andrew Spielberg, Daniela Rus,
+and Wojciech Matusik. Robogrammar: graph grammar
+for terrain-optimized robot design.ACM Transactions
+on Graphics (TOG), 39(6):1–16, 2020.
+[112] Mohan Zhou, Yalong Bai, Wei Zhang, Ting Yao, and
+Tiejun Zhao. Interactive conversational head generation.
+IEEE Transactions on Pattern Analysis and Machine
+Intelligence, 2025.
+[113] Lifeng Zhu, Weiwei Xu, John Snyder, Yang Liu, Guop-
+ing Wang, and Baining Guo. Motion-guided mechanical
+toy modeling.ACM Transactions on Graphics (TOG),
+31(6):1–10, 2012.
+[114] Yongming Zhu, Longhao Zhang, Zhengkun Rong, Tian-
+
+===== PAGE 14 =====
+shu Hu, Shuang Liang, and Zhipeng Ge. INFP: Audio-
+driven interactive head generation in dyadic conver-
+sations. InProceedings of the Computer Vision and
+Pattern Recognition Conference, pages 10667–10677,
+2025.
+[115] Yongtong Zhu, Lei Li, Iggy Qian, WenBin Zhou,
+Ye Yuan, Qingdu Li, Na Liu, and Jianwei Zhang.
+Awakening Facial Emotional Expressions in Human-
+Robot.arXiv preprint arXiv:2510.23059, 2025.
+[116] Wojciech Zielonka, Timo Bolkart, and Justus Thies.
+Towards Metrical Reconstruction of Human Faces.Eu-
+ropean Conference on Computer Vision, 2022.

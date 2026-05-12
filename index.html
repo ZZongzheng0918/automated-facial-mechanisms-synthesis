@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Project page for Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots, RSS 2026." />
+  <title>Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots</title>
+  <style>
+    :root {
+      --text: #1b1b1f;
+      --muted: #5f6368;
+      --line: #d7dbe0;
+      --accent: #0b6bcb;
+      --accent-dark: #074d92;
+      --bg: #ffffff;
+      --soft: #f6f8fa;
+      --max: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.58;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 56px 0 30px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .venue {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 4px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 0;
+      background: var(--soft);
+    }
+
+    h1 {
+      margin: 0 auto 24px;
+      max-width: 920px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .authors {
+      margin: 0 auto 10px;
+      max-width: 850px;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .affiliations {
+      margin: 0 auto;
+      max-width: 930px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .button:hover {
+      background: var(--accent-dark);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .button.secondary:hover {
+      background: var(--soft);
+      color: var(--accent-dark);
+    }
+
+    main {
+      padding: 34px 0 56px;
+    }
+
+    section {
+      margin: 0 0 38px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .teaser {
+      width: 100%;
+      min-height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      text-align: center;
+      padding: 24px;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    footer {
+      padding: 24px 0 38px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        padding-top: 34px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .authors {
+        font-size: 15px;
+      }
+
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="page">
+      <div class="venue">RSS 2026</div>
+      <h1>Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots</h1>
+      <p class="authors">
+        Zongzheng Zhang<sup>*1,2</sup>, Zi Lin<sup>*1</sup>, Jiawen Yang<sup>1</sup>, Ziqiao Peng<sup>1</sup>,
+        Junyan Lao<sup>1</sup>, Lin Cheng<sup>4</sup>, Huazhe Xu<sup>3</sup>, Hang Zhao<sup>3</sup>, Hao Zhao<sup>&dagger;1,2</sup>
+      </p>
+      <p class="affiliations">
+        <sup>1</sup> Institute for AI Industry Research (AIR), Tsinghua University &nbsp;
+        <sup>2</sup> Beijing Academy of Artificial Intelligence (BAAI) &nbsp;
+        <sup>3</sup> Institute for Interdisciplinary Information Sciences (IIIS), Tsinghua University &nbsp;
+        <sup>4</sup> Beihang University<br />
+        <sup>*</sup> Equal contribution &nbsp; <sup>&dagger;</sup> Corresponding author
+      </p>
+      <nav class="links" aria-label="Project links">
+        <a class="button" href="#paper">Paper</a>
+        <a class="button secondary" href="#video">Video</a>
+        <a class="button secondary" href="#code">Code</a>
+        <a class="button secondary" href="#data">Data</a>
+        <a class="button secondary" href="#bibtex">BibTeX</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="teaser" aria-labelledby="teaser-title">
+      <h2 id="teaser-title">Overview</h2>
+      <div class="teaser">
+        <div>
+          <strong>Teaser image or video placeholder</strong><br />
+          Replace this block with <code>assets/teaser.mp4</code> or <code>assets/teaser.jpg</code> after the camera-ready assets are finalized.
+        </div>
+      </div>
+    </section>
+
+    <section id="abstract" aria-labelledby="abstract-title">
+      <h2 id="abstract-title">Abstract</h2>
+      <p>
+        Animatronic faces are a central component of socially interactive robots, enabling rich nonverbal communication through facial articulation.
+        However, state-of-the-art animatronic faces are typically tailored systems: each new facial geometry requires extensive manual mechanical
+        redesign, making large-scale personalization prohibitively slow and costly.
+      </p>
+      <p>
+        We introduce a parametric, linkage-driven mechanical face template whose topology and actuator layout are explicitly parameterized to support
+        systematic scaling and retargeting across diverse facial morphologies. Building on this template, we propose a hierarchical automatic design
+        algorithm that takes a single 2D portrait as input, reconstructs a target 3D face, and synthesizes a collision-free, manufacturable internal
+        mechanism.
+      </p>
+      <p>
+        Beyond hardware synthesis, we develop a dual-identity conversational facial motion synthesis framework that jointly models speaking and
+        listening behaviors from audio, producing temporally coherent 3D facial motion suitable for physical execution.
+      </p>
+    </section>
+
+    <section id="paper" aria-labelledby="paper-title">
+      <h2 id="paper-title">Paper</h2>
+      <p>
+        The camera-ready paper will be available here.
+      </p>
+      <!-- After uploading the PDF to this repository, replace the sentence above with:
+      <p><a href="./paper.pdf">Download paper</a></p>
+      -->
+    </section>
+
+    <section id="highlights" aria-labelledby="highlights-title">
+      <h2 id="highlights-title">Highlights</h2>
+      <div class="two-column">
+        <div class="panel">
+          <h3>Automated Hardware Design</h3>
+          <p>
+            A hierarchical optimization pipeline adapts a parametric facial mechanism template to diverse reconstructed 3D faces while accounting for
+            manufacturability and collision constraints.
+          </p>
+        </div>
+        <div class="panel">
+          <h3>Conversational Motion Synthesis</h3>
+          <p>
+            A dual-speaker interaction model synthesizes speaking and listening facial motions for real-time actuation on physical animatronic robots.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" aria-labelledby="video-title">
+      <h2 id="video-title">Video</h2>
+      <p>
+        The supplementary video will be added here.
+      </p>
+      <!-- Example after you upload the video:
+      <video controls playsinline width="100%" poster="assets/teaser.jpg">
+        <source src="assets/supplementary.mp4" type="video/mp4" />
+      </video>
+      -->
+    </section>
+
+    <section id="code" aria-labelledby="code-title">
+      <h2 id="code-title">Code</h2>
+      <p>
+        Code will be released after publication.
+      </p>
+    </section>
+
+    <section id="data" aria-labelledby="data-title">
+      <h2 id="data-title">Data and Hardware</h2>
+      <p>
+        Hardware designs, datasets, and additional assets will be released after publication.
+      </p>
+    </section>
+
+    <section id="bibtex" aria-labelledby="bibtex-title">
+      <h2 id="bibtex-title">BibTeX</h2>
+      <pre><code>@inproceedings{zhang2026automated,
+  title     = {Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots},
+  author    = {Zhang, Zongzheng and Lin, Zi and Yang, Jiawen and Peng, Ziqiao and Lao, Junyan and Cheng, Lin and Xu, Huazhe and Zhao, Hang and Zhao, Hao},
+  booktitle = {Robotics: Science and Systems (RSS)},
+  year      = {2026}
+}</code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <div class="page">
+      Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots &middot; RSS 2026
+    </div>
+  </footer>
+</body>
+</html>
