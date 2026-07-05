@@ -1,18 +1,9 @@
 # Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots
 
 <p align="center">
-  <a href="https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/">
-    <img src="https://img.shields.io/badge/Project-Page-2f80ed?style=for-the-badge" alt="Project Page">
-  </a>
-  <a href="https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces%20%282%29.pdf">
-    <img src="https://img.shields.io/badge/PDF-scalable__conversational__faces-d64541?style=for-the-badge" alt="PDF">
-  </a>
-  <a href="https://arxiv.org/">
-    <img src="https://img.shields.io/badge/arXiv-coming__soon-b31b1b?style=for-the-badge" alt="arXiv">
-  </a>
-  <a href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration">
-    <img src="https://img.shields.io/badge/Dataset-HuggingFace-ffcc4d?style=for-the-badge" alt="Dataset">
-  </a>
+  <a href="https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/"><img src="https://img.shields.io/badge/Project%20Page-Website-2f80ed?style=for-the-badge&logo=githubpages&logoColor=white" alt="Project Page"></a>
+  <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-coming%20soon-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv"></a>
+  <a href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=black" alt="Dataset"></a>
 </p>
 
 This repository contains the official resources for **Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots**.
