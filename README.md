@@ -27,7 +27,7 @@ This repository is intended to serve as a lightweight entry point for the projec
 
 - **Paper PDF:** [scalable_conversational_faces](https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces.pdf)
 - **Dataset:** [Mechanical Head Mouth Calibration Dataset](https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration)
-- **Project page:** coming soon
+- **Project page:** [Project Page](https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/)
 - **arXiv:** coming soon
 
 ## Dataset
