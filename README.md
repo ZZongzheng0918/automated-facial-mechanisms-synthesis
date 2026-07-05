@@ -18,11 +18,8 @@ This repository is intended to serve as a lightweight entry point for the projec
 
 - paper and project links
 - released dataset pointer
-- code and scripts for the synthesis/calibration pipeline
-- reference 3D assembly diagrams for robot-head internal mechanisms
+- 3D assembly diagrams for robot-head internal mechanisms
 - documentation for reproducing or extending the system
-
-Large datasets are hosted separately on Hugging Face to keep this GitHub repository easy to clone.
 
 ## Resources
 
