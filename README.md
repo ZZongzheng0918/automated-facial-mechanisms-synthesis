@@ -6,7 +6,7 @@
   <a href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=black" alt="Dataset"></a>
 </p>
 
-This repository contains the official resources for **Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots**.
+This repository contains the official resources for our **RSS 2026 accepted paper**, **Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots**.
 
 The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, this repository will provide reference materials for several robot-head internal 3D architectures and assembly layouts, so that future researchers and builders can better understand how the mechanisms are physically arranged.
 
@@ -25,7 +25,7 @@ This repository is intended to serve as a lightweight entry point for the projec
 
 - **Paper PDF:** [scalable_conversational_faces](https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces.pdf)
 - **Dataset:** [Mechanical Head Mouth Calibration Dataset](https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration)
-- **Project page:** [Project Page](https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/)
+- **Project page:** coming soon
 - **arXiv:** coming soon
 
 ## Dataset
