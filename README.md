@@ -23,7 +23,7 @@ This repository is intended to serve as a lightweight entry point for the projec
 
 ## Resources
 
-- **Paper PDF:** [scalable_conversational_faces](https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces%20%282%29.pdf)
+- **Paper PDF:** [scalable_conversational_faces](https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces.pdf)
 - **Dataset:** [Mechanical Head Mouth Calibration Dataset](https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration)
 - **Project page:** coming soon
 - **arXiv:** coming soon
@@ -67,7 +67,7 @@ The 3D references are provided for research and educational use. They are intend
 ```text
 .
 +-- README.md
-+-- scalable_conversational_faces (2).pdf
++-- scalable_conversational_faces.pdf
 +-- assets/
 +-- docs/
 +-- hardware/

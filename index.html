@@ -112,11 +112,19 @@
       font-weight: 600;
     }
 
-    .resource-button svg {
+    .resource-button svg,
+    .resource-button img {
       width: 17px;
       height: 17px;
       flex: 0 0 auto;
+    }
+
+    .resource-button svg {
       stroke: currentColor;
+    }
+
+    .resource-button img {
+      object-fit: contain;
     }
 
     .resource-button:hover {
@@ -351,7 +359,7 @@
         <sup>*</sup> Equal contribution &nbsp; <sup>&dagger;</sup> Corresponding author
       </p>
       <nav class="resource-links" aria-label="Paper and hardware resources">
-        <a class="resource-button" href="https://arxiv.org/pdf/2601.00000" target="_blank" rel="noopener noreferrer">
+        <a class="resource-button" href="./scalable_conversational_faces.pdf" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M14 2v5h5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -366,6 +374,10 @@
             <path d="m18 18-5-12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           arXiv
+        </a>
+        <a class="resource-button" href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration" target="_blank" rel="noopener noreferrer">
+          <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" aria-hidden="true" />
+          Dataset
         </a>
         <a class="resource-button" href="https://github.com/automated-facial-mechanisms/hardware-template" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
