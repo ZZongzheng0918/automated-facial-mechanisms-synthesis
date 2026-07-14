@@ -106,12 +106,10 @@ More detailed installation and usage instructions will be added as the code rele
 If you find this work useful, please cite:
 
 ```bibtex
-@inproceedings{zhong2026automated,
-  title     = {Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots},
-  author    = {TBD},
-  booktitle = {Robotics: Science and Systems (RSS)},
-  year      = {2026}
-}
+@article{zhang2026automated, title={Automated Synthesis of Facial Mechanisms for Conversational Animatronic Robots}, 
+author={Zhang, Zongzheng and Lin, Zi and Yang, Jiawen and Peng, Ziqiao and Lao, Junyan and Cheng, Lin and Xu, Huazhe and Zhao, Hang and Zhao, Hao}, 
+journal={arXiv preprint arXiv:2607.11688}, 
+year={2026} }
 ```
 
 ## License
