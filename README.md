@@ -7,7 +7,7 @@
 </p>
 
 <h3 align="center">
- <strong>Accepted to RSS 2026</strong>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Best%20Paper-Finalist-f5b301?style=for-the-badge" alt="Best Paper Finalist">
+ <strong>Accepted to RSS 2026</strong>&nbsp;&nbsp;<font color="#b31b1b"><strong>Best Paper Finalist</strong></font>
 </h3>
 
 The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, this repository will provide reference materials for several robot-head internal 3D architectures and assembly layouts, so that future researchers and builders can better understand how the mechanisms are physically arranged.
