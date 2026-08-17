@@ -2,12 +2,12 @@
 
 <p align="center">
   <a href="https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/"><img src="https://img.shields.io/badge/Project%20Page-Website-2f80ed?style=for-the-badge&logo=githubpages&logoColor=white" alt="Project Page"></a>
-  <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-coming%20soon-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv"></a>
+  <a href="https://arxiv.org/abs/2607.11688"><img src="https://img.shields.io/badge/arXiv-2607.11688-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv:2607.11688"></a>
   <a href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=black" alt="Dataset"></a>
 </p>
 
 <h3 align="center">
- <strong>Accepted to RSS 2026</strong>
+ <strong>Accepted to RSS 2026</strong>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Best%20Paper-Finalist-f5b301?style=for-the-badge" alt="Best Paper Finalist">
 </h3>
 
 The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, this repository will provide reference materials for several robot-head internal 3D architectures and assembly layouts, so that future researchers and builders can better understand how the mechanisms are physically arranged.
@@ -28,7 +28,7 @@ This repository is intended to serve as a lightweight entry point for the projec
 - **Paper PDF:** [scalable_conversational_faces](https://github.com/ZZongzheng0918/automated-facial-mechanisms-synthesis/blob/main/scalable_conversational_faces.pdf)
 - **Dataset:** [Mechanical Head Mouth Calibration Dataset](https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration)
 - **Project page:** [Project Page](https://zzongzheng0918.github.io/automated-facial-mechanisms-synthesis/)
-- **arXiv:** coming soon
+- **arXiv:** [arXiv:2607.11688](https://arxiv.org/abs/2607.11688)
 
 ## Dataset
 
