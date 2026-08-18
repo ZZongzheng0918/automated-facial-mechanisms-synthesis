@@ -12,7 +12,7 @@
 
 The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, we have open-sourced the complete SolidWorks assembly models for six robot heads, so that future researchers and builders can study how the mechanisms are physically arranged and adapt the designs for their own work.
 
-> **Hardware release:** The complete models for **BaiShe, Elf, Jack, Luke, Rose, and XiaoQing** are available in the [`hardware/`](hardware/) directory.
+> **Hardware release:** The complete models for **Elf, Jack, Luke, Rose, XiaoQing and BaiShe** are available in the [`hardware/`](hardware/) directory.
 
 ## Overview
 
