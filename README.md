@@ -10,7 +10,9 @@
   <strong>Accepted to RSS 2026 &nbsp;&nbsp;·&nbsp;&nbsp; Best Paper Finalist</strong>
 </h3>
 
-The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, this repository will provide reference materials for several robot-head internal 3D architectures and assembly layouts, so that future researchers and builders can better understand how the mechanisms are physically arranged.
+The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, we have open-sourced the complete SolidWorks assembly models for six robot heads, so that future researchers and builders can study how the mechanisms are physically arranged and adapt the designs for their own work.
+
+> **Hardware release:** The complete models for **BaiShe, Elf, Jack, Luke, Rose, and XiaoQing** are available in the [`hardware/`](hardware/) directory.
 
 ## Overview
 
@@ -20,9 +22,8 @@ This repository is intended to serve as a lightweight entry point for the projec
 
 - paper and project links
 - released dataset pointer
-- 3D assembly diagrams for robot-head internal mechanisms
+- complete SolidWorks models for six robot-head mechanisms
 - documentation for reproducing or extending the system
-
 
 ## Dataset
 
@@ -45,9 +46,16 @@ The dataset is aligned by `sample_id`:
 sample_id = i  <=>  images/i.jpg  <=>  row sample_id=i in every CSV
 ```
 
-## 3D Mechanism References
+## Open-Source Complete Head Models
 
-Besides the dataset, this repository will include reference materials for several robot-head internal 3D architectures and assembly layouts.
+We have open-sourced the complete SolidWorks assembly models for the following robot heads. Each folder contains the top-level assemblies and their referenced part files:
+
+- [BaiShe](hardware/BaiShe/)
+- [Elf](hardware/elf/)
+- [Jack](hardware/jack/)
+- [Luke](hardware/luke/)
+- [Rose](hardware/rose/)
+- [XiaoQing](hardware/XiaoQing/)
 
 These files are meant to help readers understand:
 
@@ -56,7 +64,7 @@ These files are meant to help readers understand:
 - how compact internal layouts can support conversational facial motion
 - how to adapt the design ideas to other animatronic or robotic heads
 
-The 3D references are provided for research and educational use. They are intended as assembly and design references rather than ready-to-manufacture production files.
+The complete models are provided for research and educational use. They are intended as assembly and design references rather than ready-to-manufacture production files.
 
 ## Repository Structure
 
@@ -73,11 +81,11 @@ The 3D references are provided for research and educational use. They are intend
 +-- requirements.txt
 ```
 
-Planned organization:
+Key organization:
 
 - `assets/`: teaser images, figures, and lightweight visual assets
 - `docs/`: additional documentation and mechanism notes
-- `hardware/`: 3D assembly references and internal architecture diagrams
+- `hardware/`: complete SolidWorks assemblies and referenced parts for six robot heads
 - `scripts/`: data processing, calibration, and visualization scripts
 - `src/`: core implementation
 - `examples/`: minimal examples for running the released code
