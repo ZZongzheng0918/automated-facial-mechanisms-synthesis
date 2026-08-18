@@ -24,6 +24,16 @@ This repository is intended to serve as a lightweight entry point for the projec
 - complete SolidWorks models for six robot-head mechanisms
 - documentation for reproducing or extending the system
 
+## Diverse Facial Mechanism Synthesis
+
+<p align="center">
+  <img src="assets/images/diverse-facial-mechanism-synthesis.png" alt="Eight synthesized robotic head mechanisms: Yoda, Luke, Rose, Jack, Elf, Xuxian, Bai Suzhen, and Xiaoqing" width="100%">
+</p>
+
+<p align="center">
+  <em>Automated mechanism synthesis across eight diverse facial morphologies: Yoda, Luke, Rose, Jack, Elf, Xuxian, Bai Suzhen, and Xiaoqing. Complete CAD models for six of these heads are released below.</em>
+</p>
+
 ## Dataset
 
 The released dataset contains **4993 aligned samples** captured from a mechanical-head mouth system. Each sample includes:
