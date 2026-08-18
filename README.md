@@ -6,9 +6,9 @@
   <a href="https://huggingface.co/datasets/Zzz0918/mechanical-head-mouth-calibration"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=black" alt="Dataset"></a>
 </p>
 
-$
-\Large\mathbf{Accepted\ to\ RSS\ 2026}\quad\color{red}{\mathbf{Best\ Paper\ Finalist}}
-$
+<h3 align="center">
+  <strong>Accepted to RSS 2026 &nbsp;&nbsp;·&nbsp;&nbsp; Best Paper Finalist</strong>
+</h3>
 
 The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, this repository will provide reference materials for several robot-head internal 3D architectures and assembly layouts, so that future researchers and builders can better understand how the mechanisms are physically arranged.
 
