@@ -20,7 +20,6 @@ Conversational robots need faces that are expressive, compact, and mechanically 
 
 This repository is intended to serve as a lightweight entry point for the project:
 
-- paper and project links
 - released dataset pointer
 - complete SolidWorks models for six robot-head mechanisms
 - documentation for reproducing or extending the system
