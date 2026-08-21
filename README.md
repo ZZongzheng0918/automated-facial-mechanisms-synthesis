@@ -131,6 +131,3 @@ Code, dataset, and hardware-reference licenses will be specified before the fina
 
 If you use the dataset, please also refer to the license and metadata on the Hugging Face dataset page.
 
-## Acknowledgements
-
-We thank the collaborators and contributors who supported the design, fabrication, data collection, and evaluation of the conversational animatronic robot platform.
