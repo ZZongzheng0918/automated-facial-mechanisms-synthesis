@@ -10,9 +10,9 @@
   <strong>Accepted to RSS 2026 &nbsp;&nbsp;·&nbsp;&nbsp; Best Paper Finalist</strong>
 </h3>
 
-The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, we have open-sourced the complete SolidWorks assembly models for six robot heads, so that future researchers and builders can study how the mechanisms are physically arranged and adapt the designs for their own work.
+The project studies how to design and calibrate expressive facial mechanisms for conversational animatronic robots. In addition to the paper and dataset, we have open-sourced the complete SolidWorks assembly models for seven robot heads, so that future researchers and builders can study how the mechanisms are physically arranged and adapt the designs for their own work.
 
-> **Hardware release:** The complete models for **Elf, Jack, Luke, Rose, XiaoQing and BaiShe** are available in the [`hardware/`](hardware/) directory.
+> **Hardware release:** The complete models for **BaiShe, Elf, Jack, Luke, Rose, XiaoQing, and XuXian** are available in the [`hardware/`](hardware/) directory.
 
 ## Overview
 
@@ -21,7 +21,7 @@ Conversational robots need faces that are expressive, compact, and mechanically 
 This repository is intended to serve as a lightweight entry point for the project:
 
 - released dataset pointer
-- complete SolidWorks models for six robot-head mechanisms
+- complete SolidWorks models for seven robot-head mechanisms
 - documentation for reproducing or extending the system
 
 ## Diverse Facial Mechanism Synthesis
@@ -31,7 +31,7 @@ This repository is intended to serve as a lightweight entry point for the projec
 </p>
 
 <p align="center">
-  <em>Automated mechanism synthesis across eight diverse facial morphologies: Yoda, Luke, Rose, Jack, Elf, Xuxian, Bai Suzhen, and Xiaoqing. Complete CAD models for six of these heads are released below.</em>
+  <em>Automated mechanism synthesis across eight diverse facial morphologies: Yoda, Luke, Rose, Jack, Elf, Xuxian, Bai Suzhen, and Xiaoqing. Complete CAD models for seven of these heads are released below.</em>
 </p>
 
 ## Dataset
@@ -65,6 +65,7 @@ We have open-sourced the complete SolidWorks assembly models for the following r
 - [Luke](hardware/luke/)
 - [Rose](hardware/rose/)
 - [XiaoQing](hardware/XiaoQing/)
+- [XuXian](hardware/XuXian/)
 
 These files are meant to help readers understand:
 
@@ -94,7 +95,7 @@ Key organization:
 
 - `assets/`: teaser images, figures, and lightweight visual assets
 - `docs/`: additional documentation and mechanism notes
-- `hardware/`: complete SolidWorks assemblies and referenced parts for six robot heads
+- `hardware/`: complete SolidWorks assemblies and referenced parts for seven robot heads
 - `scripts/`: data processing, calibration, and visualization scripts
 - `src/`: core implementation
 - `examples/`: minimal examples for running the released code
