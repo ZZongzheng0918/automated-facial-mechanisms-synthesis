@@ -59,11 +59,11 @@ sample_id = i  <=>  images/i.jpg  <=>  row sample_id=i in every CSV
 
 We have open-sourced the complete SolidWorks assembly models for the following robot heads. Each folder contains the top-level assemblies and their referenced part files:
 
-- [BaiShe](hardware/BaiShe/)
 - [Elf](hardware/elf/)
+- [Rose](hardware/rose/)
 - [Jack](hardware/jack/)
 - [Luke](hardware/luke/)
-- [Rose](hardware/rose/)
+- [BaiShe](hardware/BaiShe/)
 - [XiaoQing](hardware/XiaoQing/)
 - [XuXian](hardware/XuXian/)
 
