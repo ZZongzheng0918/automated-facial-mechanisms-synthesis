@@ -1,0 +1,5 @@
+# Preserve CAD, 3D-model, and assembly diagnostic files byte-for-byte.
+*.SLDASM binary
+*.SLDPRT binary
+*.glb binary
+*.err binary
